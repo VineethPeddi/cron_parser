@@ -103,23 +103,18 @@ def expand_cron_string(cron_str):
         logging.error(error)
         raise
     else:
-        print("minute",end=" ")
-        print(get_minutes(cron_values[0],0,59))
-        print("hour",end=" ")
-        print(get_hours(cron_values[1],0,23))
-        print("day of month",end=" ")
-        print(get_dates_in_month(cron_values[2],1,30))
-        print("month",end=" ")
-        print(get_months(cron_values[3],1,12))
+        print('minute ' + ' '.join(map(str, get_minutes(cron_values[0],0,59))))
+        print('hour ' + ' '.join(map(str, get_hours(cron_values[1],0,23))))
+        print('day of month ' + ' '.join(map(str, get_dates_in_month(cron_values[2],1,30))))
+        print('month '+ ' '.join(map(str, get_months(cron_values[3],1,12))))
         daysInAllWeeks=get_days_of_all_weeks(cron_values[4],0,6)
         for i in range (4):
-            print("day of week "+ str(i),end=" ")
-            print(daysInAllWeeks[i])
-        print("command ",cron_values[5])
+            print('day of week '+ str(i+1)+ '   '+ ' '.join(map(str, daysInAllWeeks[i])))
+        print('command ',cron_values[5])
 
 def main():
     if len(sys.argv) != 2:
-        print("Usage: {} <cron_string>".format(sys.argv[0]))
+        print('Usage: {} <cron_string>'.format(sys.argv[0]))
         sys.exit(1)
 
     cron_str = sys.argv[1]
