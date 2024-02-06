@@ -31,7 +31,10 @@ def get_value(timeUnit,minLimit,maxLimit):
         elif "*" in str:
             ans.extend(list(range(minLimit,maxLimit+1)))
         else:
-            ans.append(int(str))
+            val=int(str)
+            if val<minLimit or val>maxLimit:
+                raise ValueError('Invalid cron value')
+            ans.append(val)
 
     return sorted(set(ans))
 
@@ -99,10 +102,6 @@ def expand_cron_string(cron_str):
     cron_values = cron_str.split()
     try:
         validate_cron_values(cron_values)
-    except ValueError as error:
-        logging.error(error)
-        raise
-    else:
         print('minute ' + ' '.join(map(str, get_minutes(cron_values[0],0,59))))
         print('hour ' + ' '.join(map(str, get_hours(cron_values[1],0,23))))
         print('day of month ' + ' '.join(map(str, get_dates_in_month(cron_values[2],1,30))))
@@ -111,6 +110,9 @@ def expand_cron_string(cron_str):
         for i in range (4):
             print('day of week '+ str(i+1)+ '   '+ ' '.join(map(str, daysInAllWeeks[i])))
         print('command ',cron_values[5])
+    except ValueError as error:
+        logging.error(error)
+        raise
 
 def main():
     if len(sys.argv) != 2:
